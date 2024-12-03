@@ -49,6 +49,13 @@ public class Jackcontroler : MonoBehaviour {
 	public float acceleration;
 
 	//for restart
+	public GameObject game_manager_object;
+    Game_manager game_manager;
+	public LayerMask killerground; 
+	public float stop_time=1;
+	float passed_time=0;
+	bool killed;
+	float initial_speed;
 
 
 	// Use this for initialization
@@ -76,7 +83,8 @@ public class Jackcontroler : MonoBehaviour {
 		max_hight_pos=max_hight_pointer.transform;
 
 		//for restart
-		
+		game_manager=game_manager_object.GetComponent<Game_manager>();
+		initial_speed=speed;
 
 
 
@@ -154,9 +162,34 @@ public class Jackcontroler : MonoBehaviour {
 			pre_land_number=current_land_number;
 		}
 
-		
+
+		//for restart
+		if(Physics2D.IsTouchingLayers(player_layer,killerground))
+		{
+			killed=true;
+		}
+		if(killed)
+		{
+			speed=0;
+			if(passed_time<stop_time)
+			{
+				passed_time+=Time.deltaTime;
+			}else
+			{
+				game_manager.restart();
+				passed_time=0;
+				speed=initial_speed;
+				killed=false;
+			}
+		}
 
 
 	}
-	
+	/*public void OnTriggerEnter2d(Collider2D other)
+	{
+		if(other.gameObject.tag=="killbox")
+		{
+			killed=true;
+		}
+	}*/
 }

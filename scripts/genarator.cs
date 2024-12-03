@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class genarator : MonoBehaviour {
 
@@ -23,6 +24,7 @@ public class genarator : MonoBehaviour {
 	public float jet_generate_chance;
 	float jet_random_num;
 	Vector3 jet_position;
+
 	
 
 	//public float[] widths;
@@ -60,6 +62,8 @@ public class genarator : MonoBehaviour {
 			added_hight=Random.Range(0,(max_hight_allowded-initial_hight));
 		Instantiate(/*the_ground*/the_grounds[ground_selector],transform.position,transform.rotation);
 		land_counter=land_counter+1;
+
+		
 
 			//for jetpack
 			jet_random_num=Random.Range(0,100);
