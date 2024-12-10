@@ -18,7 +18,7 @@ public class ground_check : MonoBehaviour {
 	void Update () {
 
 		player_is_grounded=Physics2D.IsTouchingLayers(foot_collider,ground_layer);
-
+		
 	
 	}
 }

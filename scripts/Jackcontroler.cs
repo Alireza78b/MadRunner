@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Jackcontroler : MonoBehaviour {
 
@@ -52,10 +54,15 @@ public class Jackcontroler : MonoBehaviour {
 	public GameObject game_manager_object;
     Game_manager game_manager;
 	public LayerMask killerground; 
-	public float stop_time=1;
-	float passed_time=0;
-	bool killed;
+	//public float stop_time=1;
+	//float passed_time=0;
+	public bool killed;
 	float initial_speed;
+
+	//for sound effects
+	public AudioSource running_sound; 
+	public AudioSource jump_sound;
+	public AudioSource jetpack_sound;
 
 
 	// Use this for initialization
@@ -102,10 +109,18 @@ public class Jackcontroler : MonoBehaviour {
 		{
 
 			rigid.velocity=new Vector2(rigid.velocity.x ,jumpheight);
+			jump_sound.Play();
 		}
+
 		if(is_grounded)
 		{
 			space_push_count=1;
+			
+		}
+
+		if(!is_grounded)
+		{
+			running_sound.Play();
 		}
 
 
@@ -121,6 +136,7 @@ public class Jackcontroler : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.Space)&!is_grounded)
 		{
 			space_push_count+=space_push_count;
+			
 		}
 
 		if(Input.GetKey(KeyCode.Space)&!is_grounded &space_push_count==2&remained_feul>0)
@@ -129,6 +145,7 @@ public class Jackcontroler : MonoBehaviour {
 			rigid.velocity=new Vector2(rigid.velocity.x,jumpheight);
 			remained_feul-= Time.deltaTime;
 			jet_used=true;
+			
 		}else
 		{
 			jet_used=false;
@@ -139,10 +156,17 @@ public class Jackcontroler : MonoBehaviour {
 			fire_position.position=new Vector3(transform.position.x-fire_x_diference,transform.position.y-fire_y_diference,transform.position.z);
 			Instantiate(fire,fire_position.position,fire_position.rotation);
 			fire_created=true;
+
+		}
+		
+		if(!fire_created )
+		{
+			jetpack_sound.Play();
 		}
 		if(Input.GetKeyUp(KeyCode.Space))
 		{
 			fire_created=false;
+			
 		}
 
 
@@ -168,24 +192,31 @@ public class Jackcontroler : MonoBehaviour {
 		{
 			killed=true;
 		}
-		if(killed)
-		{
-			speed=0;
-			if(passed_time<stop_time)
-			{
-				passed_time+=Time.deltaTime;
-			}else
-			{
-				game_manager.restart();
-				passed_time=0;
-				speed=initial_speed;
-				killed=false;
-			}
-		}
+		
+	}
 
+
+	public void after_kill()
+	{
+        speed=0;
+		/*if(passed_time<stop_time)
+		{
+			passed_time+=Time.deltaTime;
+		}else
+		{*/
+		//gameObject.SetActive(true);
+		game_manager.restart();
+		//passed_time=0;
+		land_generator.GetComponent<genarator>().land_counter=0;
+		remained_feul=full_feul;
+		speed=initial_speed;
+		killed=false;	     	    
 
 	}
-	/*public void OnTriggerEnter2d(Collider2D other)
+
+
+	/*}
+	public void OnTriggerEnter2d(Collider2D other)
 	{
 		if(other.gameObject.tag=="killbox")
 		{
