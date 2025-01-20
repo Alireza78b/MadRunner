@@ -93,4 +93,8 @@ public class genarator : MonoBehaviour {
 		
 		}
 	}
+	public void Reset_LandCount()
+	{
+		land_counter=0;
+	}
 }

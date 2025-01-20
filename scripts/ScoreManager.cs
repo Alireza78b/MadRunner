@@ -34,4 +34,5 @@ public class ScoreManager : MonoBehaviour {
 		coin_number+=1;
 		Coin_text.text=" "+coin_number;
 	}
+	
 }
